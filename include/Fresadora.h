@@ -4,11 +4,13 @@
 #include "Maquina.h"
 
 class Fresadora : public Maquina {
+private:
+    void ejecutarCiclo() override;
+
 public:
     explicit Fresadora(const std::string& nombre);
 
-    void procesar() override;
-        int tiempoCicloSeg() const override;
+    int tiempoCicloSeg() const override;
 };
 
 #endif

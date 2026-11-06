@@ -123,17 +123,11 @@ c) Pasaría lo mismo: su máquina compilaría sin problemas y el reporte saldrí
 
 **3.7 Etapa 7. La base hace cumplir el contrato**
 
-a) ¿Cómo puede una clase derivada sobrescribir un método que es privado en la base?
+a) private controla quién puede llamar a un método, y virtual controla qué versión se ejecuta. Son cosas independientes. La derivada puede dar su propia versión de ejecutarCiclo() aunque no pueda llamar a la de la base, y la base lo llama a través del enlace dinámico.
 
-[Inserta aquí tu respuesta]
+b) Ahora la base revisa el tiempo antes de cada ciclo y lanza una excepción con el nombre de la máquina y la regla que rompió. El programa se detiene con un mensaje claro. En la Etapa 6 el error no se detectaba: el reporte salía con capacidad infinita y cero piezas, y nadie se daba cuenta.
 
-b) ¿Qué ocurre ahora con una máquina cuyo tiempo de ciclo es 0? Compáralo con la Etapa 6.
-
-[Inserta aquí tu respuesta]
-
-c) ¿Por qué la línea ignoró el "atajo" del torno, pero la llamada directa no? ¿Cómo corregiste el diseño?
-
-[Inserta aquí tu respuesta]
+c) La línea llama a procesar() a través de un Maquina*, y como procesar() no es virtual, siempre ejecuta la versión de la base, con sus reglas. El atajo del torno solo oculta a procesar() cuando se llama directamente desde una variable Torno, y por eso la llamada directa sí se saltó las reglas. Lo corregí borrando el atajo, porque ocultar un método no virtual de la base es un error de diseño.
 
 **3.8 Etapa 8. Herencia mal usada**
 

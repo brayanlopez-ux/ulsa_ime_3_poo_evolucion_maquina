@@ -4,10 +4,8 @@
 
 Fresadora::Fresadora(const std::string& nombre) : Maquina(nombre) {}
 
-void Fresadora::procesar() {
+void Fresadora::ejecutarCiclo() {
     std::cout << getNombre() << ": fresando pieza\n";
-    registrarPieza();
-    agregarTiempo(tiempoCicloSeg());
 }
 
 int Fresadora::tiempoCicloSeg() const {
