@@ -33,16 +33,15 @@ La usan los otros equipos, que van a hacer sus propias máquinas a partir de ell
 
 **2.3 ¿Qué cambió entre los dos diagramas?**
 
-| Elemento | Etapa 0 | Etapa 9 | Etapa que lo cambió |
-| --- | --- | --- | --- |
-| Visibilidad de los atributos de `Maquina` | _____ | _____ | _____ |
-| `procesar()` | _____ | _____ | _____ |
-| `tiempoCicloSeg()` | _____ | _____ | _____ |
-| Destructor de `Maquina` | _____ | _____ | _____ |
-| ¿Se pueden crear objetos `Maquina`? | _____ | _____ | _____ |
-| Relación `ControlDeLinea` - `Maquina` | _____ | _____ | _____ |
-| Relación `Torno` - `Motor` | _____ | _____ | _____ |
-| Relación `BandaTransportadora` - `Motor` | _____ | _____ | _____ |
+Elemento	Etapa 0	Etapa 9	Etapa que lo cambió
+Visibilidad de los atributos de Maquina	Públicos (+)	Privados (-)	Etapa 1
+procesar()	Público, no virtual, con implementación genérica	Público, no virtual; controla el ciclo y llama a ejecutarCiclo()	Etapa 7 (pasó por las etapas 2 y 5)
+tiempoCicloSeg()	No existía	Público, const, virtual puro	Etapa 2 (creado) y Etapa 5 (virtual puro)
+Destructor de Maquina	No declarado (el del compilador, no virtual)	virtual ~Maquina() = default;	Etapa 4
+¿Se pueden crear objetos Maquina?	Sí	No, es abstracta	Etapa 5
+Relación ControlDeLinea - Maquina	No existía	Agregación (guarda punteros)	Etapa 3
+Relación Torno - Motor	No existía	Composición	Etapa 4
+Relación BandaTransportadora - Motor	No existía	Composición	Etapa 8
 
 ## Fase 3. Implementar
 
