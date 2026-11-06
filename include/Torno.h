@@ -13,6 +13,7 @@ private:
 public:
     explicit Torno(const std::string& nombre);
 
+    void procesar();
     int tiempoCicloSeg() const override;
 };
 
