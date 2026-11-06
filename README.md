@@ -73,41 +73,39 @@ Ya no pueden modificar directamente nombre, piezasProcesadas ni tiempoTrabajadoS
 
 a) La fresadora acumula 180 s, pero reporta 360 pzas/h. ¿Por qué un cálculo usó 60 s y el otro 10 s?
 
-Porque en la fresadora escribí int tiempoCicloSeg() sin const, y en la base es int tiempoCicloSeg() const. El const es parte de la firma, así que son dos métodos distintos y el de la fresadora no sobrescribía al de la base. procesar() de la fresadora llamaba a su propia versión (60 s). Pero capacidadPorHora() está en la base, y mostrarEstado() es const, así que solo podía llamar a la versión const de la base (10 s). Por eso un mismo objeto usó dos tiempos distintos.
+En la fresadora escribí int tiempoCicloSeg() sin const, y en Maquina es int tiempoCicloSeg() const. El const es parte de la firma, así que eran dos métodos distintos y el de la fresadora no sobrescribía al de la base. procesar() usaba la versión de la fresadora (60 s). Pero mostrarEstado() es const, así que solo podía llamar a la versión const de la base (10 s) para calcular la capacidad. Por eso el mismo objeto usó dos tiempos distintos.
 
 b) ¿Tu compilador mostró alguna advertencia antes de usar override? ¿Qué mensaje dio después de agregar override?
 
-Después de agregar override, el compilador dio error: 'int Fresadora::tiempoCicloSeg()' marked 'override', but does not override. Eso me avisó que mi método no sobrescribía ninguno de la base.
+Sí. El compilador mostró la advertencia 'virtual int Maquina::tiempoCicloSeg() const' was hidden, que ya me avisaba que el método de la fresadora estaba ocultando al de la base. Después de agregar override dio el error 'int Fresadora::tiempoCicloSeg()' marked 'override', but does not override. Corregí el const en el .h y en el .cpp y el error desapareció.
 
 **3.3 Etapa 3. La línea de producción**
 
-a) ¿Por qué la línea procesó todo como "generico" si `procesar()` ya es virtual?
+a) ¿Por qué la línea procesó todo como “generico” si procesar() ya es virtual?
 
-[Inserta aquí tu respuesta]
+Porque la línea guardaba las máquinas en un std::vector<Maquina>, o sea por valor. Al guardar un Torno o una Fresadora ahí se copia solo la parte Maquina y se pierde la parte derivada. A eso se le llama slicing. Ya dentro del vector eran Maquina de verdad, así que procesar() ejecutaba la versión de la base. El enlace dinámico solo funciona con punteros o referencias a la base.
 
 b) ¿Por qué el torno y la fresadora originales quedaron con 0 piezas?
 
-[Inserta aquí tu respuesta]
+Porque agregar() recibía una copia. La línea trabajó con sus propias copias dentro del vector, y los objetos originales de main nunca se tocaron.
 
-c) La relación entre `ControlDeLinea` y `Maquina`, ¿es composición o agregación? ¿Por qué?
+c) La relación entre ControlDeLinea y Maquina, ¿es composición o agregación? ¿Por qué?
 
-[Inserta aquí tu respuesta]
+Es agregación. La línea solo guarda punteros a máquinas que ya existen fuera de ella. No las crea ni las destruye, y por eso nunca hace delete. Si la línea desaparece, las máquinas siguen existiendo en la planta.
 
 **3.4 Etapa 4. Destructores**
+Momento	Mensajes de destrucción que aparecieron
+delete temporal; sin destructor virtual	Destruyendo Maquina
+delete temporal; con destructor virtual	Destruyendo Torno, Destruyendo Motor, Destruyendo Maquina
+Al terminar main (torno y fresadora)	Destruyendo Maquina (la fresadora), luego Destruyendo Torno, Destruyendo Motor, Destruyendo Maquina (el torno)
 
-| Momento | Mensajes de destrucción que aparecieron |
-| --- | --- |
-| `delete temporal;` sin destructor virtual | _____ |
-| `delete temporal;` con destructor virtual | _____ |
-| Al terminar `main` (torno y fresadora) | _____ |
+aa) ¿Qué advertencia mostró el compilador? ¿Por qué decimos que ya te estaba avisando del problema?
 
-a) ¿Qué advertencia mostró el compilador? ¿Por qué decimos que ya te estaba avisando del problema?
+Mostró deleting object of polymorphic class type 'Maquina' which has non-virtual destructor might cause undefined behavior. Ya me estaba avisando porque el programa compilaba, pero el aviso decía justo lo que iba a pasar: al borrar un Torno a través de un puntero a Maquina sin destructor virtual, solo se destruía la parte Maquina y el Torno y su Motor nunca se destruían.
 
-[Inserta aquí tu respuesta]
+b) ¿Por qué el torno de main sí se destruyó completo aunque el destructor no fuera virtual? ¿A qué máquina corresponde el primer “Destruyendo Maquina” después de “Fin de main”?
 
-b) ¿Por qué el torno de `main` sí se destruyó completo aunque el destructor no fuera virtual? ¿A qué máquina corresponde el primer "Destruyendo Maquina" después de "Fin de main"?
-
-[Inserta aquí tu respuesta]
+Porque torno es una variable local de tipo Torno, y el compilador conoce su tipo real, así que llama directo al destructor de Torno, que luego destruye su Motor y después la base. En cambio, con delete temporal el tipo declarado era Maquina* y, sin virtual, el compilador solo llamó al destructor de Maquina. El primer “Destruyendo Maquina” después de “Fin de main” es de la fresadora, porque los objetos locales se destruyen en orden inverso a su creación, y la fresadora se creó después del torno. Ella solo tiene el destructor de la base, porque no tiene motor.
 
 **3.5 Etapa 5. La clase abstracta**
 
