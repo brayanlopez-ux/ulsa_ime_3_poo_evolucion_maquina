@@ -2,12 +2,9 @@
 
 #include <iostream>
 
-Torno::Torno(const std::string& nombre) : Maquina(nombre), husillo(3000.0) {}
+namespace planta {
 
-void Torno::procesar() {
-    std::cout << getNombre() << ": atajo, ciclo rapido\n";
-    ejecutarCiclo();
-}
+Torno::Torno(const std::string& nombre) : Maquina(nombre), husillo(3000.0) {}
 
 void Torno::ejecutarCiclo() {
     husillo.fijarVelocidad(1200.0);
@@ -18,3 +15,5 @@ void Torno::ejecutarCiclo() {
 int Torno::tiempoCicloSeg() const {
     return 45;
 }
+
+}  // namespace planta

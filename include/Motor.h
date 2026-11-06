@@ -1,19 +1,20 @@
-#ifndef TORNO_H
-#define TORNO_H
+#ifndef MOTOR_H
+#define MOTOR_H
 
-#include "Maquina.h"
-#include "Motor.h"
+namespace planta {
 
-class Torno : public Maquina {
+class Motor {
 private:
-    Motor husillo;
-
-    void ejecutarCiclo() override;
+    double velocidadMaxRpm;
+    double velocidadActualRpm;
 
 public:
-    explicit Torno(const std::string& nombre);
+    explicit Motor(double velocidadMaxRpm);
 
-    int tiempoCicloSeg() const override;
+    void fijarVelocidad(double rpm);
+    double getVelocidad() const;
 };
+
+}  // namespace planta
 
 #endif

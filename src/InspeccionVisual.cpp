@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace planta {
+
 InspeccionVisual::InspeccionVisual(const std::string& nombre) : Maquina(nombre) {}
 
 void InspeccionVisual::ejecutarCiclo() {
@@ -11,3 +13,5 @@ void InspeccionVisual::ejecutarCiclo() {
 int InspeccionVisual::tiempoCicloSeg() const {
     return 15;
 }
+
+}  // namespace planta

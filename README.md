@@ -131,13 +131,9 @@ c) La línea llama a procesar() a través de un Maquina*, y como procesar() no e
 
 **3.8 Etapa 8. Herencia mal usada**
 
-a) Da al menos dos razones por las que `BandaTransportadora : public Motor` es un error de diseño.
+a) Primera razón: una banda no es un motor, y la herencia pública promete que la derivada es un tipo de la base. Al heredar de Motor, la banda dejó de ser una Maquina, y por eso el compilador no pudo convertir BandaTransportadora* a Maquina* y no se pudo agregar a la línea. Segunda razón: al heredar públicamente, la banda expuso fijarVelocidad() a todo el programa, y cualquiera puede cambiar su velocidad desde fuera (banda.fijarVelocidad(5000.0) no dio error), cuando solo la banda debería decidir cuándo y cómo.
 
-[Inserta aquí tu respuesta]
-
-b) La relación entre `BandaTransportadora` y `Motor`, ¿es composición o agregación? ¿Por qué?
-
-[Inserta aquí tu respuesta]
+b) Es composición. La banda crea su propio motor y lo guarda como atributo, y el motor existe solo mientras exista la banda: si la banda se destruye, su motor también. Es la misma relación que tiene el torno con su husillo.
 
 **3.9 Etapa 9. La librería y la prueba final**
 
