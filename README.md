@@ -8,17 +8,18 @@ Llena cada espacio conforme avances en las fases de [PRACTICA.md](PRACTICA.md).
 
 **1.1 El problema con mis propias palabras**
 
-[Inserta aquí tu respuesta]
+En la planta hay una línea con varias máquinas: un torno, una fresadora, una pulidora, una estación de inspección y una banda transportadora. Todas procesan piezas en ciclos. De cada máquina hay que saber cómo se llama, cuántas piezas lleva, cuánto tiempo ha trabajado y cuánto tarda en hacer un ciclo. Con eso, la línea corre turnos y saca un reporte con las piezas, el tiempo y las piezas por hora de cada una. Lo difícil es que otros equipos van a crear máquinas nuevas usando mi clase Maquina, así que tengo que diseñarla de forma que no se pueda usar mal.
 
 **1.2 Reglas que siempre deben cumplirse en una máquina** (escribe al menos tres)
 
-1. _____
-2. _____
-3. _____
+El nombre no puede estar vacío.
+Las piezas procesadas no pueden ser negativas.
+El tiempo trabajado no puede ser negativo.
+El tiempo de un ciclo tiene que ser mayor que cero, porque si es cero la capacidad por hora se divide entre cero y sale infinito.
 
 **1.3 ¿Quién más usa la clase `Maquina`? ¿Qué podría salir mal si otro equipo crea una máquina nueva sin conocer tus reglas?**
 
-[Inserta aquí tu respuesta]
+La usan los otros equipos, que van a hacer sus propias máquinas a partir de ella, y también la parte que controla la línea y saca el reporte. Si alguien hace una máquina nueva sin conocer mis reglas, puede ponerle piezas o tiempo negativos, un ciclo de cero segundos o simplemente olvidarse de contar sus piezas. El programa compilaría bien, pero el reporte saldría con datos que no tienen sentido y nadie lo notaría.
 
 ## Fase 2. Diseñar la solución
 
