@@ -48,37 +48,36 @@ La usan los otros equipos, que van a hacer sus propias máquinas a partir de ell
 
 **3.0 Etapa 0. Una máquina sin reglas**
 
-a) ¿Qué imprime `ejecutarTurno()` para el torno y la fresadora? ¿Por qué no imprime "torneando" ni "fresando"?
+a) ¿Qué imprime ejecutarTurno() para el torno y la fresadora? ¿Por qué no imprime “torneando” ni “fresando”?
 
-[Inserta aquí tu respuesta]
+Imprime “procesamiento generico” para las dos. Esto pasa porque ejecutarTurno() recibe la máquina como Maquina&, y procesar() no es virtual. Entonces el compilador decide qué método llamar según el tipo declarado de la variable (Maquina) y no según el tipo real del objeto (Torno o Fresadora). A esto se le llama enlace estático.
 
 b) ¿Por qué el torno acumula 65 s y no 135 s?
 
-[Inserta aquí tu respuesta]
-
+Porque solo la llamada directa usó Torno::procesar(), que suma 45 s. Los otros dos ciclos pasaron por ejecutarTurno() y usaron Maquina::procesar(), que suma 10 s cada uno. Entonces 45 + 10 + 10 = 65. Si hubiera usado el método del torno las tres veces, serían 45 × 3 = 135.
 **3.1 Etapa 1. Invariantes y constructores explicit**
 
-a) ¿Qué regla de la sección 1.2 rompió `torno.piezasProcesadas = -5;`?
+a) ¿Qué regla de la sección 1.2 rompió torno.piezasProcesadas = -5;?
 
-[Inserta aquí tu respuesta]
+Rompió la regla de que las piezas procesadas nunca pueden ser negativas. Como el atributo era público, cualquiera podía cambiarlo directo y nada lo detuvo.
 
-b) ¿De dónde salió la máquina "Fantasma"? ¿Qué hizo el compilador sin que se lo pidieras?
+b) ¿De dónde salió la máquina “Fantasma”? ¿Qué hizo el compilador sin que se lo pidieras?
 
-[Inserta aquí tu respuesta]
+imprimirFicha() pide una Maquina, y yo le pasé un std::string. Como el constructor de Maquina recibe un solo string, el compilador lo usó solo para convertir “Fantasma” en una Maquina temporal. Hizo esa conversión automática sin que yo lo pidiera.
 
-c) ¿Qué tuviste que cambiar en `Torno` y `Fresadora` y por qué?
+c) ¿Qué tuviste que cambiar en Torno y Fresadora y por qué?
 
-[Inserta aquí tu respuesta]
+Ya no pueden modificar directamente nombre, piezasProcesadas ni tiempoTrabajadoSeg, porque ahora son privados. Cambié el código para que usen getNombre() para leer el nombre, y registrarPieza() y agregarTiempo() para actualizar los contadores. También puse explicit en sus constructores para que no haya conversiones automáticas.
 
 **3.2 Etapa 2. Virtual y override**
 
 a) La fresadora acumula 180 s, pero reporta 360 pzas/h. ¿Por qué un cálculo usó 60 s y el otro 10 s?
 
-[Inserta aquí tu respuesta]
+Porque en la fresadora escribí int tiempoCicloSeg() sin const, y en la base es int tiempoCicloSeg() const. El const es parte de la firma, así que son dos métodos distintos y el de la fresadora no sobrescribía al de la base. procesar() de la fresadora llamaba a su propia versión (60 s). Pero capacidadPorHora() está en la base, y mostrarEstado() es const, así que solo podía llamar a la versión const de la base (10 s). Por eso un mismo objeto usó dos tiempos distintos.
 
-b) ¿Tu compilador mostró alguna advertencia antes de usar `override`? ¿Qué mensaje dio después de agregar `override`?
+b) ¿Tu compilador mostró alguna advertencia antes de usar override? ¿Qué mensaje dio después de agregar override?
 
-[Inserta aquí tu respuesta]
+Después de agregar override, el compilador dio error: 'int Fresadora::tiempoCicloSeg()' marked 'override', but does not override. Eso me avisó que mi método no sobrescribía ninguno de la base.
 
 **3.3 Etapa 3. La línea de producción**
 

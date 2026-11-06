@@ -5,9 +5,10 @@
 
 class Fresadora : public Maquina {
 public:
-    Fresadora(const std::string& nombre);
+    explicit Fresadora(const std::string& nombre);
 
-    void procesar();
+    void procesar() override;
+        int tiempoCicloSeg() const override;
 };
 
 #endif

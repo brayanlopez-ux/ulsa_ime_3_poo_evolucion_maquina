@@ -5,7 +5,11 @@
 Torno::Torno(const std::string& nombre) : Maquina(nombre) {}
 
 void Torno::procesar() {
-    std::cout << nombre << ": torneando pieza\n";
-    piezasProcesadas++;
-    tiempoTrabajadoSeg += 45;
+    std::cout << getNombre() << ": torneando pieza\n";
+    registrarPieza();
+    agregarTiempo(tiempoCicloSeg());
+}
+
+int Torno::tiempoCicloSeg() const {
+    return 45;
 }
