@@ -115,17 +115,11 @@ b) Antes, la pulidora no pulía y una “máquina sin tipo” produjo piezas, y 
 
 **3.6 Etapa 6. El contrato que el compilador no ve**
 
-a) ¿Qué partes del contrato violó `InspeccionVisual`?
+a) Violó dos partes del contrato. procesar() no llamó a registrarPieza() ni a agregarTiempo(), así que sus piezas y su tiempo se quedaron en cero. Y tiempoCicloSeg() devolvió 0, cuando el contrato dice que siempre debe ser mayor que cero. Por eso la capacidad por hora se calculó como 3600 entre 0 y salió infinita.
 
-[Inserta aquí tu respuesta]
+b) Porque el compilador solo revisa la forma del contrato: nombres, parámetros y tipos. Todas las firmas de InspeccionVisual eran correctas. Lo que se rompió fue el significado de lo que promete la base, y eso el compilador no lo puede ver.
 
-b) ¿Por qué el compilador no lo detectó?
-
-[Inserta aquí tu respuesta]
-
-c) ¿Qué pasaría si el próximo equipo tampoco lee el comentario del contrato?
-
-[Inserta aquí tu respuesta]
+c) Pasaría lo mismo: su máquina compilaría sin problemas y el reporte saldría con datos absurdos, como piezas en cero o capacidad infinita, sin que nadie lo notara. Un comentario depende de que cada equipo lo lea y lo respete. La Etapa 7 lo resuelve haciendo que la base cumpla el contrato por ellos.
 
 **3.7 Etapa 7. La base hace cumplir el contrato**
 
