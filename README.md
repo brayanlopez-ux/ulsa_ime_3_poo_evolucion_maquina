@@ -151,26 +151,24 @@ Al escribir -lplanta antes de src/main.cpp salieron varios errores undefined ref
 
 **4.1 Tabla de pruebas**
 
-| # | Caso | Resultado esperado | Resultado obtenido | ¿Pasa? |
-| --- | --- | --- | --- | --- |
-| 1 | Máquina con nombre vacío | Excepción con mensaje claro | _____ | _____ |
-| 2 | Reporte de una línea vacía | "La linea no tiene maquinas" | _____ | _____ |
-| 3 | `agregar(nullptr)` | Devuelve `false` | _____ | _____ |
-| 4 | Reporte antes de ejecutar el turno | 0 piezas, 0 s y capacidad calculada | _____ | _____ |
-| 5 | Turno de 0 ciclos | Nada cambia | _____ | _____ |
-| 6 | Torno con 3 ciclos | 3 piezas, 135 s, 80 pzas/h | _____ | _____ |
-| 7 | Máquina con `tiempoCicloSeg()` igual a 0 | Excepción con mensaje claro | _____ | _____ |
-| 8 | Máquina con `tiempoCicloSeg()` negativo | Excepción con mensaje claro | _____ | _____ |
-| 9 | La misma máquina agregada dos veces | _____ | _____ | _____ |
+#	Caso	Resultado esperado	Resultado obtenido	¿Pasa?
+1	Máquina con nombre vacío	Excepción con mensaje claro	Error: El nombre de la maquina no puede estar vacio	Sí
+2	Reporte de una línea vacía	“La linea no tiene maquinas”	La linea no tiene maquinas	Sí
+3	agregar(nullptr)	Devuelve false	false	Sí
+4	Reporte antes de ejecutar el turno	0 piezas, 0 s y capacidad calculada	piezas: 0 | tiempo: 0 s | capacidad: 80 pzas/h	Sí
+5	Turno de 0 ciclos	Nada cambia	Igual que el caso 4, sin cambios	Sí
+6	Torno con 3 ciclos	3 piezas, 135 s, 80 pzas/h	piezas: 3 | tiempo: 135 s | capacidad: 80 pzas/h	Sí
+7	Máquina con tiempoCicloSeg() igual a 0	Excepción con mensaje claro	Error: Defectuosa D-07: tiempoCicloSeg() debe ser mayor que cero	Sí
+8	Máquina con tiempoCicloSeg() negativo	Excepción con mensaje claro	Error: Defectuosa D-08: tiempoCicloSeg() debe ser mayor que cero	Sí
+9	La misma máquina agregada dos veces	Debería rechazarse: una máquina física no debe aparecer dos veces ni trabajar doble en el turno	La línea la acepta: aparece dos veces en el reporte y procesa 2 piezas en un solo ciclo	No
 
 **4.2 Bitácora de mejoras**
 
-| # | Falla o mejora detectada | Qué cambié | Por qué |
-| --- | --- | --- | --- |
-| 1 | _____ | _____ | _____ |
-| 2 | _____ | _____ | _____ |
+#	Falla o mejora detectada	Qué cambié	Por qué
+1	Caso 9: agregar() acepta la misma máquina dos veces y el reporte cuenta el doble de piezas	No lo cambié. Queda como mejora pendiente: agregar() debería devolver false si el puntero ya está en la línea	Una máquina física no debe trabajar dos veces en un turno. Es el primer reto opcional y decidí no hacerlo en esta práctica
+2	Los otros 8 casos pasaron sin cambios	Nada	Las validaciones de las etapas anteriores ya cubrían esos casos
 
-Retos opcionales que intenté: _____
+Retos opcionales que intenté: _0____
 
 ## Fase 5. Publicar en GitHub
 
@@ -182,25 +180,24 @@ Retos opcionales que intenté: _____
 
 **6.1 Errores que ya no pueden ocurrir**
 
-| Error | Etapa en que apareció | Restricción que lo impide ahora | ¿Quién lo detecta: el compilador o el programa? |
-| --- | --- | --- | --- |
-| Contadores con valores inválidos | _____ | _____ | _____ |
-| Máquina "fantasma" creada a escondidas | _____ | _____ | _____ |
-| Método que no sobrescribe por un `const` | _____ | _____ | _____ |
-| Máquinas copiadas y "rebanadas" | _____ | _____ | _____ |
-| Destrucción incompleta | _____ | _____ | _____ |
-| Máquina sin `procesar()` propio | _____ | _____ | _____ |
-| Tiempo de ciclo inválido | _____ | _____ | _____ |
-| Derivada que no registra sus piezas | _____ | _____ | _____ |
+Error	Etapa en que apareció	Restricción que lo impide ahora	¿Quién lo detecta: el compilador o el programa?
+Contadores con valores inválidos	Etapa 1	Atributos privados; solo la base los cambia y agregarTiempo() valida	Compilador (no se pueden tocar directo) y programa (excepción si el tiempo es inválido)
+Máquina “fantasma” creada a escondidas	Etapa 1	Constructor explicit	Compilador
+Método que no sobrescribe por un const	Etapa 2	override en todas las derivadas	Compilador
+Máquinas copiadas y “rebanadas”	Etapa 3	La línea guarda punteros y Maquina es abstracta, así que no se puede copiar	Compilador
+Destrucción incompleta	Etapa 4	virtual ~Maquina() = default;	Compilador (advertencia)
+Máquina sin procesar() propio	Etapa 5	Método virtual puro (ejecutarCiclo() y tiempoCicloSeg())	Compilador
+Tiempo de ciclo inválido	Etapa 6	tiempoCicloValidado() lanza std::logic_error	Programa (en ejecución)
+Derivada que no registra sus piezas	Etapa 6	procesar() no virtual en la base registra pieza y tiempo; registrarPieza() es privado	Compilador
 
 **6.2 ¿Cuál de los errores fue el más peligroso: el de compilación, la advertencia o el que compilaba sin problemas? ¿Por qué?**
 
-[Inserta aquí tu respuesta]
+El más peligroso fue el que compilaba sin problemas: la InspeccionVisual de la Etapa 6. No hubo error ni advertencia, y el reporte salía con capacidad infinita y cero piezas, así que nadie lo habría notado. La advertencia de la Etapa 4 fue menos grave porque al menos el compilador avisaba, y el error de compilación fue lo más seguro porque no dejaba avanzar.
 
 **6.3 ¿Qué aprendiste en esta práctica?**
 
-[Inserta aquí tu respuesta]
+Aprendí que diseñar no es solo escribir clases, sino decidir qué no se puede hacer con ellas. Entendí la diferencia entre enlace estático y dinámico, por qué hace falta virtual y un puntero o referencia, qué pasa con el slicing y por qué el destructor debe ser virtual. También aprendí que override y los métodos virtuales puros convierten errores silenciosos en errores del compilador, y que si una regla importa hay que hacerla cumplir en la base en vez de solo documentarla. Además vi la diferencia entre herencia (“es un”) y composición (“tiene un”), y cómo un espacio de nombres y una librería permiten agregar una máquina sin tocar el resto.
 
 **6.4 ¿Qué cambiarías de tu proceso la próxima vez?**
 
-[Inserta aquí tu respuesta]
+La próxima vez compilaría siempre desde la raíz del repositorio y no usaría los botones de VS Code, porque me hicieron perder tiempo con errores que no eran del código. También haría commit al terminar cada etapa en lugar de juntarlos, y leería con calma los mensajes del compilador y las advertencias antes de pedir ayuda.
