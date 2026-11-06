@@ -137,21 +137,16 @@ b) Es composición. La banda crea su propio motor y lo guarda como atributo, y e
 
 **3.9 Etapa 9. La librería y la prueba final**
 
-a) Después de agregar la `Cortadora`, ¿qué archivos mostró `git status`? ¿Cuántos archivos de la librería tuviste que modificar?
-
-[Inserta aquí tu respuesta]
-
-b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
-
-[Inserta aquí tu respuesta]
+Al escribir -lplanta antes de src/main.cpp salieron varios errores undefined reference. Pasa porque el enlazador resuelve lo que falta de izquierda a derecha. Cuando leyó la librería todavía no sabía qué funciones necesitaba main.cpp, así que no tomó nada de ella. Al llegar a main.cpp ya no había dónde buscar. Por eso la librería va después del código que la usa.
 
 **3.10 Bitácora de dudas**
 
-| # | Etapa | Duda | Cómo la resolví | Fuente |
-| --- | --- | --- | --- | --- |
-| 1 | _____ | _____ | _____ | _____ |
-| 2 | _____ | _____ | _____ | _____ |
-| 3 | _____ | _____ | _____ | _____ |
+#	Etapa	Duda	Cómo la resolví	Fuente
+1	Fase 0	g++ decía src/*.cpp: No such file or directory	La terminal estaba dentro de la carpeta src/. Subí a la raíz con cd .. y compilé desde ahí	Mensaje del compilador
+2	Fase 0	El botón de compilar de VS Code daba Fresadora.h: No such file or directory	Ese botón compila solo main.cpp sin -Iinclude. Dejé de usarlo y compilé con el comando de la práctica	Mensaje del compilador
+3	Etapa 2	marked 'override', but does not override en Fresadora	Faltaba el const en la firma de tiempoCicloSeg(). Lo agregué en el .h y en el .cpp	PRACTICA.md
+4	Etapa 4	undefined reference al enlazar, aunque el código parecía correcto	Faltaban funciones en Maquina.cpp. Reemplacé el archivo completo y volvió a compilar	Mensaje del enlazador
+5	Etapa 6	undefined reference to InspeccionVisual::InspeccionVisual	El archivo InspeccionVisual.cpp no estaba en src/ o estaba vacío. Lo recreé en la carpeta correcta	Mensaje del enlazador
 
 ## Fase 4. Probar y mejorar
 
