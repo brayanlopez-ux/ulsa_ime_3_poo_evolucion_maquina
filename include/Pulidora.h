@@ -7,6 +7,7 @@ class Pulidora : public Maquina {
 public:
     explicit Pulidora(const std::string& nombre);
 
+    void procesar() override;
     int tiempoCicloSeg() const override;
 };
 

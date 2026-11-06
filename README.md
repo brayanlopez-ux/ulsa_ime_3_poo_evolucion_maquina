@@ -109,13 +109,9 @@ Porque torno es una variable local de tipo Torno, y el compilador conoce su tipo
 
 **3.5 Etapa 5. La clase abstracta**
 
-a) Copia los mensajes de error y explica con tus palabras qué dice cada uno.
+a) (Pega aquí los mensajes de error que te salieron.) El primer error dice que no se puede crear pulidora porque Pulidora es abstracta: le falta implementar procesar(), que en Maquina es virtual puro. El segundo dice que no se puede crear generica porque Maquina misma es abstracta, ya que tiene procesar() y tiempoCicloSeg() virtuales puros. Las líneas note: explican el porqué: qué métodos puros siguen sin implementar.
 
-[Inserta aquí tu respuesta]
-
-b) ¿Por qué es mejor este error de compilación que el comportamiento "generico" de antes?
-
-[Inserta aquí tu respuesta]
+b) Antes, la pulidora no pulía y una “máquina sin tipo” produjo piezas, y el reporte salía mal sin que nadie se diera cuenta. Ahora el compilador no deja crear una máquina sin tipo ni una máquina concreta a la que le falte procesar(). El error aparece al compilar, antes de que el programa llegue a la planta.
 
 **3.6 Etapa 6. El contrato que el compilador no ve**
 
