@@ -20,9 +20,6 @@ int main() {
         linea.agregar(&pulidora);
         linea.agregar(&inspeccion);
 
-        torno.procesar();
-        torno.mostrarEstado();
-
         linea.ejecutarTurno(2);
         linea.imprimirReporte();
     } catch (const std::exception& e) {

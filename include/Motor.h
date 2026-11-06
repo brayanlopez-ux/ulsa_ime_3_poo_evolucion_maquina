@@ -1,16 +1,19 @@
-#ifndef MOTOR_H
-#define MOTOR_H
+#ifndef TORNO_H
+#define TORNO_H
 
-class Motor {
+#include "Maquina.h"
+#include "Motor.h"
+
+class Torno : public Maquina {
 private:
-    double velocidadMaxRpm;
-    double velocidadActualRpm;
+    Motor husillo;
+
+    void ejecutarCiclo() override;
 
 public:
-    explicit Motor(double velocidadMaxRpm);
+    explicit Torno(const std::string& nombre);
 
-    void fijarVelocidad(double rpm);
-    double getVelocidad() const;
+    int tiempoCicloSeg() const override;
 };
 
 #endif

@@ -1,13 +1,15 @@
-#include "Pulidora.h"
+#include "Torno.h"
 
 #include <iostream>
 
-Pulidora::Pulidora(const std::string& nombre) : Maquina(nombre) {}
+Torno::Torno(const std::string& nombre) : Maquina(nombre), husillo(3000.0) {}
 
-void Pulidora::ejecutarCiclo() {
-    std::cout << getNombre() << ": puliendo pieza\n";
+void Torno::ejecutarCiclo() {
+    husillo.fijarVelocidad(1200.0);
+    std::cout << getNombre() << ": torneando pieza a "
+              << husillo.getVelocidad() << " rpm\n";
 }
 
-int Pulidora::tiempoCicloSeg() const {
-    return 30;
+int Torno::tiempoCicloSeg() const {
+    return 45;
 }
