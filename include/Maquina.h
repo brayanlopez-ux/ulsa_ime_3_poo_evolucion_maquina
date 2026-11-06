@@ -18,8 +18,8 @@ public:
     explicit Maquina(const std::string& nombre);
     virtual ~Maquina() = default;
 
-    virtual void procesar();
-    virtual int tiempoCicloSeg() const;
+    virtual void procesar() = 0;
+    virtual int tiempoCicloSeg() const = 0;
     double capacidadPorHora() const;
 
     const std::string& getNombre() const;

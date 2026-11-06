@@ -21,16 +21,6 @@ void Maquina::agregarTiempo(int segundos) {
     tiempoTrabajadoSeg += segundos;
 }
 
-void Maquina::procesar() {
-    std::cout << nombre << ": procesamiento generico\n";
-    registrarPieza();
-    agregarTiempo(tiempoCicloSeg());
-}
-
-int Maquina::tiempoCicloSeg() const {
-    return 10;
-}
-
 double Maquina::capacidadPorHora() const {
     return 3600.0 / tiempoCicloSeg();
 }
