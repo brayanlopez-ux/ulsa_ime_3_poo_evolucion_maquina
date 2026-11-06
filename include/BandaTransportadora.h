@@ -1,13 +1,19 @@
 #ifndef BANDATRANSPORTADORA_H
 #define BANDATRANSPORTADORA_H
 
+#include "Maquina.h"
 #include "Motor.h"
 
-class BandaTransportadora : public Motor {
-public:
-    BandaTransportadora();
+class BandaTransportadora : public Maquina {
+private:
+    Motor motor;
 
-    void moverPieza();
+    void ejecutarCiclo() override;
+
+public:
+    explicit BandaTransportadora(const std::string& nombre);
+
+    int tiempoCicloSeg() const override;
 };
 
 #endif

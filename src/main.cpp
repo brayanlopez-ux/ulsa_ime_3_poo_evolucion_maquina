@@ -14,7 +14,7 @@ int main() {
         Fresadora fresadora("Fresadora F-01");
         Pulidora pulidora("Pulidora P-01");
         InspeccionVisual inspeccion("Inspeccion I-01");
-        BandaTransportadora banda;
+        BandaTransportadora banda("Banda B-01");
 
         ControlDeLinea linea;
         linea.agregar(&torno);
@@ -22,7 +22,6 @@ int main() {
         linea.agregar(&pulidora);
         linea.agregar(&inspeccion);
         linea.agregar(&banda);
-        banda.fijarVelocidad(5000.0);
 
         linea.ejecutarTurno(2);
         linea.imprimirReporte();
